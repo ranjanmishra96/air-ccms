@@ -6,7 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 
-import com.test.server.exception.CCMSException;
+
 @SuppressWarnings({ "rawtypes" })
 public interface GenericDAO<E , PK extends Serializable> {
 	
@@ -17,9 +17,9 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @param newInstance Represents the instance to be saved.
 	 * 
 	 * @return PK Represents the primary key of the entity
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	public PK create(E newInstance) throws CCMSException;
+	public PK create(E newInstance) throws Exception;
 
 	/**
 	 * This method is used to update the entity into database.
@@ -27,18 +27,18 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @param entity Represents the instance to be updated.
 	 * 
 	 * @see org.hibernate.Session#saveOrUpdate(java.lang.Object)
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	void update(E entity) throws CCMSException;
+	void update(E entity) throws Exception;
 
 	/**
 	 * This method is used to merge the entity into database.
 	 * 
 	 * @param entity Represents the instance to be updated.
 	 * 
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	public void merge(final E entity) throws CCMSException;
+	public void merge(final E entity) throws Exception;
 	
 	/**
 	 * This method is used to get the particular row from database and its columns will mapped to
@@ -49,9 +49,9 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @return entity Represents the mapped obejct from database row.
 	 * 
 	 * @see org.hibernate.Session#get(java.lang.Class, java.io.Serializable)
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	E get(PK id) throws CCMSException;
+	E get(PK id) throws Exception;
 	
 	/**
 	 * This method is used to load the proxy for the object describes in the class signature E. This method 
@@ -62,18 +62,18 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @return entity Represents the proxy object.
 	 * 
 	 * @see org.hibernate.Session#load(java.lang.Class, java.io.Serializable)
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	E load(PK id) throws CCMSException;
+	E load(PK id) throws Exception;
 	
 	/**
 	 * This method is used to return the criteria object for the class describes in the class signature E..
 	 * 	
 	 * @return Represents the generic criteria object.
 	 * 
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	Criteria getCriteria() throws CCMSException;
+	Criteria getCriteria() throws Exception;
 	
 	/**
 	 * This method is used to get the Generic Criteria object.
@@ -81,9 +81,9 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @param entityclass Represents the class for which Criteria object needs be generated.
 	 * 
 	 * @return			  Represents the generic criteria object.
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	Criteria getCriteria(final Class entityclass) throws CCMSException;
+	Criteria getCriteria(final Class entityclass) throws Exception;
 	
 	/**
 	 * This method is used to execute the query of the Criteria object.
@@ -91,9 +91,9 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @param criteria  Represents the criteria object which is going to execute the query.
 	 * 
 	 * @return List     Represents the results return from the query.
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	<V> List<V> executeCriteria(final Criteria criteria) throws CCMSException;
+	<V> List<V> executeCriteria(final Criteria criteria) throws Exception;
 	
 	/**
 	 * This method is used to load the proxy for the generic object.This method 
@@ -103,9 +103,9 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @param id	 Represents the id for which proxy needs to be generated.
 	 * 
 	 * @return V 	 Represents the proxy object.
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	<V extends Object>  V  loadObject(final Class entityClass, final PK id) throws CCMSException;
+	<V extends Object>  V  loadObject(final Class entityClass, final PK id) throws Exception;
 	
 	/**
 	 * This method is used to load the generic object from the database.
@@ -114,9 +114,9 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @param id	  Represents the id for which the object needs to be fetched from database.
 	 * 
 	 * @return V	  Represents the generic object.
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	<V extends Object>  V  getObject(final Class entityClass, final PK id) throws CCMSException;
+	<V extends Object>  V  getObject(final Class entityClass, final PK id) throws Exception;
 	
 	/**
 	 * This method is used to get the generic object from database with all mentioned associations.
@@ -126,9 +126,9 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @param entityAssociations Represents the associations of the object needs to be load with the object.
 	 * 
 	 * @return V 				 Represents the Object fetched from database.
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	<V extends Object> V getEntityWithAssociations(Class entityClass,final PK entityId, final String... entityAssociations) throws CCMSException;
+	<V extends Object> V getEntityWithAssociations(Class entityClass,final PK entityId, final String... entityAssociations) throws Exception;
 	
 	/**
 	 * This method is used to get Query object for Hibernate Query.
@@ -137,9 +137,9 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * 
 	 * @return	Represents the Query object.
 	 * 
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	Query getQueryObject(final String hql) throws CCMSException;
+	Query getQueryObject(final String hql) throws Exception;
 	
 	/**
 	 * This method is used to get the results from the Hibernate DDL Query object.
@@ -147,9 +147,9 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @param query	Represents the hibernate query object for which the results needs to be fetched.
 	 * 
 	 * @return List Represents the result returns from the database.
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	<V> List<V> executeHQLSelectQuery(final Query query) throws CCMSException;
+	<V> List<V> executeHQLSelectQuery(final Query query) throws Exception;
 	
 	/**
 	 * This method is used to execute Hibernate DML Query object.
@@ -157,39 +157,39 @@ public interface GenericDAO<E , PK extends Serializable> {
 	 * @param query	Represents the hibernate query object for which the results needs to be fetched.
 	 * 
 	 * @return represents number of rows inserted/updated or deleted.
-	 * @throws CCMSException throws in case of query or DB Error. 
+	 * @throws Exception throws in case of query or DB Error. 
 	 */
-	int executeHQLDMLQuery(final Query query) throws CCMSException;
+	int executeHQLDMLQuery(final Query query) throws Exception;
 	
 	/**
 	 * 
 	 * @param object
 	 * @return id
-	 * @throws CCMSException
+	 * @throws Exception
 	 */
-	public PK saveEntity(Object object) throws CCMSException;
+	public PK saveEntity(Object object) throws Exception;
 	
 	
 	/**
 	 * 
 	 * @param newInstance
-	 * @throws CCMSException
+	 * @throws Exception
 	 */
-	public void updateEntity(Object newInstance) throws CCMSException;
+	public void updateEntity(Object newInstance) throws Exception;
 
 	/**
 	 * 
 	 * @param newInstance
-	 * @throws CCMSException
+	 * @throws Exception
 	 */
 	@SuppressWarnings("hiding")
-	public <E> List<E> findAll() throws CCMSException;
+	public <E> List<E> findAll() throws Exception;
 	
 	/**This method is used to delete Entity.
 	 * @param newInstance
-	 * @throws CCMSException
+	 * @throws Exception
 	 */
-	public void delete(E newInstance) throws CCMSException;
+	public void delete(E newInstance) throws Exception;
 
 	/**
 	 * @param <T>
