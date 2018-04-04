@@ -9,32 +9,32 @@ public interface CRUDService<T> {
 	 * 
 	 * @param T the entity to create
 	 * @return id the unique identifier of Entity
-	 * @throws CCMSException
+	 * @throws Exception
 	 */
-	public Long create(T entity)throws CCMSException;
+	public Long create(T entity)throws Exception;
 	/**
 	 * updates Entity 
 	 * 
 	 * @param T the entity to update
-	 * @throws CCMSException
+	 * @throws Exception
 	 */
-	void update(T entity)throws CCMSException;
+	void update(T entity)throws Exception;
 
 	/**
 	 * deleted Entity for given  id
 	 * 
 	 * @param id the unique identifier of Entity
-	 * @throws CCMSException
+	 * @throws Exception
 	 */
-	void delete(T entity)throws CCMSException;
+	void delete(T entity)throws Exception;
 	
 	/**
 	 * deleted Entity for given  id
 	 * 
 	 * @param id the unique identifier of Entity
-	 * @throws CCMSException
+	 * @throws Exception
 	 */
-	void delete(Long id)throws CCMSException;
+	void delete(Long id)throws Exception;
 
 
 	/**
@@ -42,8 +42,8 @@ public interface CRUDService<T> {
 	 * 
 	 * @param id the unique identifier of Entity
 	 * @return T the entity 
-	 * @throws CCMSException
+	 * @throws Exception
 	 */
-	public T findById(Long id)throws CCMSException;
+	public T findById(Long id)throws Exception;
 
 }
