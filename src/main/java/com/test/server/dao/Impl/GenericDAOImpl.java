@@ -15,7 +15,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.server.dao.GenericDAO;
-import com.test.server.exception.CCMSException;
+import com.test.server.exception.Exception;
 import com.test.server.exception.ErrorCode;
 import com.test.server.exception.UniqueConstraintEnum;
 
@@ -49,15 +49,15 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 * Method returns the current Hibernate session for the thread.
 	 * 
 	 * @return Session Represents the Hibernate session.
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
-	protected Session getCrntSession() throws CCMSException {
+	protected Session getCrntSession() throws Exception {
 		try {
 			return sessionFactory.getCurrentSession();
 		} catch (final HibernateException e) {
 			e.printStackTrace();
-			throw new CCMSException("Failed to get thread session ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Failed to get thread session ", ErrorCode.BASE_DB_ERROR, e);
 		}
 	}
 
@@ -79,11 +79,11 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 *            Represents the instance to be saved.
 	 * 
 	 * @return PK Represents the primary key of the entity
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public PK create(final E newInstance) throws CCMSException {
+	public PK create(final E newInstance) throws Exception {
 		PK id = null;
 		final Session session = getCrntSession();
 		try {
@@ -92,10 +92,10 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 		} catch (final ConstraintViolationException e) {
 			String constraintErrorMessage = UniqueConstraintEnum.findUniqueConstraintEnum(e.getConstraintName())
 					.getConstraintErrorMessage();
-			throw new CCMSException(constraintErrorMessage, ErrorCode.BASE_DB_ERROR);
+			throw new Exception(constraintErrorMessage, ErrorCode.BASE_DB_ERROR);
 		} catch (final HibernateException e) {
 			e.printStackTrace();
-			throw new CCMSException("Failed to insert  " + newInstance, ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Failed to insert  " + newInstance, ErrorCode.BASE_DB_ERROR, e);
 		}
 		return id;
 	}
@@ -107,20 +107,20 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 *            Represents the instance to be updated.
 	 * 
 	 * @see org.hibernate.Session#saveOrUpdate(java.lang.Object)
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public void update(final E entity) throws CCMSException {
+	public void update(final E entity) throws Exception {
 		try {
 			getCrntSession().merge(entity);
 			getCrntSession().flush();
 		} catch (final ConstraintViolationException e) {
 			String constraintErrorMessage = UniqueConstraintEnum.findUniqueConstraintEnum(e.getConstraintName())
 					.getConstraintErrorMessage();
-			throw new CCMSException(constraintErrorMessage, ErrorCode.BASE_DB_ERROR);
+			throw new Exception(constraintErrorMessage, ErrorCode.BASE_DB_ERROR);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while updating entity ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while updating entity ", ErrorCode.BASE_DB_ERROR, e);
 		}
 
 	}
@@ -131,20 +131,20 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 * @param entity
 	 *            Represents the instance to be updated.
 	 * 
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public void merge(final E entity) throws CCMSException {
+	public void merge(final E entity) throws Exception {
 		try {
 			getCrntSession().merge(entity);
 			getCrntSession().flush();
 		} catch (final ConstraintViolationException e) {
 			String constraintErrorMessage = UniqueConstraintEnum.findUniqueConstraintEnum(e.getConstraintName())
 					.getConstraintErrorMessage();
-			throw new CCMSException(constraintErrorMessage, ErrorCode.BASE_DB_ERROR);
+			throw new Exception(constraintErrorMessage, ErrorCode.BASE_DB_ERROR);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while updating entity ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while updating entity ", ErrorCode.BASE_DB_ERROR, e);
 		}
 
 	}
@@ -159,15 +159,15 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 * @return entity Represents the mapped obejct from database row.
 	 * 
 	 * @see org.hibernate.Session#get(java.lang.Class, java.io.Serializable)
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public E get(final PK id) throws CCMSException {
+	public E get(final PK id) throws Exception {
 		try {
 			return (E) getCrntSession().get(_entityClass, id);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while getting entity ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while getting entity ", ErrorCode.BASE_DB_ERROR, e);
 		}
 	}
 
@@ -181,15 +181,15 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 * @return entity Represents the proxy object.
 	 * 
 	 * @see org.hibernate.Session#load(java.lang.Class, java.io.Serializable)
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public E load(final PK id) throws CCMSException {
+	public E load(final PK id) throws Exception {
 		try {
 			return (E) getCrntSession().load(_entityClass, id);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while loading entity ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while loading entity ", ErrorCode.BASE_DB_ERROR, e);
 		}
 
 	}
@@ -199,15 +199,15 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 * 
 	 * @return Represents the generic criteria object.
 	 * 
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public Criteria getCriteria() throws CCMSException {
+	public Criteria getCriteria() throws Exception {
 		try {
 			return getCrntSession().createCriteria(_entityClass);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while creating criteria ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while creating criteria ", ErrorCode.BASE_DB_ERROR, e);
 		}
 	}
 
@@ -218,15 +218,15 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 *            Represents the class for which Criteria object needs be generated.
 	 * 
 	 * @return Represents the generic criteria object.
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public Criteria getCriteria(final Class entityclass) throws CCMSException {
+	public Criteria getCriteria(final Class entityclass) throws Exception {
 		try {
 			return getCrntSession().createCriteria(entityclass);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while getting criteria ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while getting criteria ", ErrorCode.BASE_DB_ERROR, e);
 		}
 	}
 
@@ -237,16 +237,16 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 *            Represents the criteria object which is going to execute the query.
 	 * 
 	 * @return List Represents the results return from the query.
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public <V> List<V> executeCriteria(final Criteria criteria) throws CCMSException {
+	public <V> List<V> executeCriteria(final Criteria criteria) throws Exception {
 		try {
 			return criteria.list();
 		} catch (final HibernateException e) {
 			e.printStackTrace();
-			throw new CCMSException("Exception while executing criteria " + criteria, ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while executing criteria " + criteria, ErrorCode.BASE_DB_ERROR, e);
 		}
 	}
 
@@ -260,15 +260,15 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 *            Represents the id for which proxy needs to be generated.
 	 * 
 	 * @return V Represents the proxy object.
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public <V extends Object> V loadObject(final Class classs, final PK id) throws CCMSException {
+	public <V extends Object> V loadObject(final Class classs, final PK id) throws Exception {
 		try {
 			return (V) getCrntSession().load(classs, id);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while load entity ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while load entity ", ErrorCode.BASE_DB_ERROR, e);
 		}
 
 	}
@@ -282,15 +282,15 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 *            Represents the id for which the object needs to be fetched from database.
 	 * 
 	 * @return V Represents the generic object.
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@Override
-	public <V extends Object> V getObject(final Class classs, final PK id) throws CCMSException {
+	public <V extends Object> V getObject(final Class classs, final PK id) throws Exception {
 		try {
 			return (V) getCrntSession().get(classs, id);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while get entity ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while get entity ", ErrorCode.BASE_DB_ERROR, e);
 		}
 	}
 
@@ -305,13 +305,13 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 *            Represents the associations of the object needs to be load with the object.
 	 * 
 	 * @return V Represents the Object fetched from database.
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public <V extends Object> V getEntityWithAssociations(Class entityClass, PK entityId, String... entityAssociations)
-			throws CCMSException {
+			throws Exception {
 
 		V dataObject = null;
 		final Criteria criteria = getCriteria(entityClass);
@@ -325,7 +325,7 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 				dataObject = entityList.get(0);
 			}
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while executing getEntityWithAssociations " + criteria, ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while executing getEntityWithAssociations " + criteria, ErrorCode.BASE_DB_ERROR, e);
 		}
 		return dataObject;
 	}
@@ -338,15 +338,15 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 * 
 	 * @return Represents the Query object.
 	 * 
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
-	public Query getQueryObject(final String hql) throws CCMSException {
+	public Query getQueryObject(final String hql) throws Exception {
 		try {
 			Query query = getCrntSession().createQuery(hql);
 			return query;
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while creating query object " + hql, ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while creating query object " + hql, ErrorCode.BASE_DB_ERROR, e);
 		}
 
 	}
@@ -358,14 +358,14 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 *            Represents the hibernate query object for which the results needs to be fetched.
 	 * 
 	 * @return List Represents the result returns from the database.
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
-	public <V> List<V> executeHQLSelectQuery(final Query query) throws CCMSException {
+	public <V> List<V> executeHQLSelectQuery(final Query query) throws Exception {
 		try {
 			return query.list();
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while executing hq query  " + query, ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while executing hq query  " + query, ErrorCode.BASE_DB_ERROR, e);
 		}
 
 	}
@@ -377,14 +377,14 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 *            Represents the hibernate query object for which the results needs to be fetched.
 	 * 
 	 * @return represents number of rows inserted/updated or deleted.
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
-	public int executeHQLDMLQuery(final Query query) throws CCMSException {
+	public int executeHQLDMLQuery(final Query query) throws Exception {
 		try {
 			return query.executeUpdate();
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while executing hq query  " + query, ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while executing hq query  " + query, ErrorCode.BASE_DB_ERROR, e);
 		}
 
 	}
@@ -395,16 +395,16 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 * @param newInstance
 	 *            Represents newInstance.
 	 * 
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
-	public PK saveEntity(Object newInstance) throws CCMSException {
+	public PK saveEntity(Object newInstance) throws Exception {
 		PK id = null;
 		final Session session = getCrntSession();
 		try {
 			id = (PK) session.save(newInstance);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Failed to insert  " + newInstance + " successfully", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Failed to insert  " + newInstance + " successfully", ErrorCode.BASE_DB_ERROR, e);
 		}
 		return id;
 	}
@@ -415,31 +415,31 @@ public class GenericDAOImpl<E, PK extends java.io.Serializable> implements Gener
 	 * @param newInstance
 	 *            Represents newInstance.
 	 * 
-	 * @throws CCMSException
+	 * @throws Exception
 	 *             throws in case of query or DB Error.
 	 */
-	public void updateEntity(Object newInstance) throws CCMSException {
+	public void updateEntity(Object newInstance) throws Exception {
 		try {
 			getCrntSession().update(newInstance);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while refresh entity ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while refresh entity ", ErrorCode.BASE_DB_ERROR, e);
 		}
 	}
 
 	@SuppressWarnings("hiding")
 	@Override
-	public <E> List<E> findAll() throws CCMSException {
+	public <E> List<E> findAll() throws Exception {
 		Criteria criteria = getCriteria(_entityClass);
 		List<E> list = executeCriteria(criteria);
 		return list;
 	}
 
 	@Override
-	public void delete(E newInstance) throws CCMSException {
+	public void delete(E newInstance) throws Exception {
 		try {
 			getCrntSession().delete(newInstance);
 		} catch (final HibernateException e) {
-			throw new CCMSException("Exception while deleting entity ", ErrorCode.BASE_DB_ERROR, e);
+			throw new Exception("Exception while deleting entity ", ErrorCode.BASE_DB_ERROR, e);
 		}
 	}
 
