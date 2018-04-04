@@ -6,7 +6,7 @@
   	
 
 	<servlet>
-		<servlet-name>air-ccms</servlet-name>
+		<servlet-name>airConfig</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		 <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -17,7 +17,7 @@
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>air-ccms</servlet-name>
+		<servlet-name>airConfig</servlet-name>
 		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
 	
