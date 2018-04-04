@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <!-- Connection properties -->
+        <property name="driverClass" value="${jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${jdbc.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+
+        
+        <property name="acquireIncrement" value="3" />
+        
+        <property name="acquireRetryAttempts" value="3" />
+        <property name="acquireRetryDelay" value="4500" /> 
+		
+        <property name="autoCommitOnClose" value="false" />
+        
+        <property name="initialPoolSize" value="3" />
+        <!-- Default: 15 Maximum number of Connections a pool will maintain at any given time. -->
+        <property name="maxPoolSize" value="100" />
+        
+        <property name="minPoolSize" value="10" />
+       
+        <property name="maxIdleTime" value="10000" /> <!-- 1 hour -->
+
+        <property name="maxConnectionAge" value="7200" /> <!-- 2hour -->
+        
+        <property name="maxIdleTimeExcessConnections" value="600" /> <!-- 10 minutes -->
+
+        <property name="preferredTestQuery" value="select current_date" />
+       
+        
+        <!-- Test the idle connections every 3 minutes (180)-->
+        <property name="idleConnectionTestPeriod" value="1800" />
+        
+        <property name="testConnectionOnCheckin" value="true" />
+
+        <property name="testConnectionOnCheckout" value="false" />
+
+        
+    </bean>
+
+</beans>

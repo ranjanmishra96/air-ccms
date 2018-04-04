@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+		
+		
+		<context:annotation-config />
+		<import resource="dozer-spring.xml"/>
+		<import resource="connection-pooling.xml" />	
+		
+		<bean id="sessionFactory" class="com.test.server.datasource.SessionFactory">
+		<property name="dataSource" ref="c3p0DataSource" />
+		
+			<property name="packagesToScan">
+				<list>
+	                <value>com.test.server.domain</value>
+	            </list>
+			</property>
+			<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.showSql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.useSqlComments}</prop>
+				<prop key="hibernate.use_sql_comments">${hibernate.formatSql}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				 <!-- Added Hibernate Autocommit Property inside the Hibernate Configuration
+				      for Performance Gain -->
+				 <prop key="hibernate.autocommit">${hibernate.autocommit}</prop> 
+			</props>
+		</property>
+		
+		</bean>
+		
+		<tx:annotation-driven transaction-manager="transactionManager"/>
+		<context:component-scan base-package="com.test.server.*"/>
+		
+		
+		<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<!-- 
+		The sessionFactory property should be wired with a Hibernate SessionFactory
+		 -->
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+</beans>
