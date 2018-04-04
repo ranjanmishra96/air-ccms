@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.test.server.dao.GenericDAO;
-import com.test.server.exception.CCMSUniqueConstraintException;
+import com.test.server.exception.UniqueConstraintException;
 import com.test.server.service.CRUDService;
 
 
@@ -40,7 +40,7 @@ public abstract class CRUDServiceImpl<T> implements CRUDService<T> {
 			}
 
 			String[] myarray = list.toArray(new String[] {});
-			throw new CCMSUniqueConstraintException(myarray);
+			throw new UniqueConstraintException(myarray);
 		}
 		return (Long) getBaseDAO().create(entity);
 	}
@@ -58,7 +58,7 @@ public abstract class CRUDServiceImpl<T> implements CRUDService<T> {
 			}
 
 			String[] myarray = list.toArray(new String[] {});
-			throw new CCMSUniqueConstraintException(myarray);
+			throw new UniqueConstraintException(myarray);
 		} else {
 			getBaseDAO().merge(entity);
 		}
